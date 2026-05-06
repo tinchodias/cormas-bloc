@@ -5,26 +5,37 @@ Class {
 	#package : 'CellFactory'
 }
 
+{ #category : 'examples' }
+CMPointyTopHexagonShape class >> example [
+
+	self new show
+]
+
+{ #category : 'accessing' }
+CMPointyTopHexagonShape >> extent [
+    | r |
+
+    r := size.
+
+    ^ (r * 3 sqrt) @ (r * 2)
+]
+
 { #category : 'accessing' }
 CMPointyTopHexagonShape >> geometry [
+    | r a |
 
-    | w h left right |
+    r := size.
+    a := r * (3 sqrt / 2).
 
-    w := size x.
-    h := size y.
+    ^ BlPolygonGeometry vertices: {
+        (0 @ r).
 
-    "build left side"
-    left := {
-        (0 @ (h * 0.25)).
-        (0 @ (h * 0.75)).
-        (w / 2 @ h)
-    }.
+        (a @ (r / 2)).
+        (a @ (-1 * r / 2)).
 
-    "build right side (mirror)"
-    right := left collect: [:p |
-        (w - p x) @ p y
-    ].
+        (0 @ (-1 * r)).
 
-    ^ BlPolygonGeometry vertices:
-        { (w / 2 @ 0) } , right , left reversed
+        (-1 * a @ (-1 * r / 2)).
+        (-1 * a @ (r / 2))
+    }
 ]

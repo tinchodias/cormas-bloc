@@ -5,28 +5,34 @@ Class {
 	#package : 'CellFactory'
 }
 
+{ #category : 'examples' }
+CMFlatTopHexagonShape class >> example [
+
+	self new show
+]
+
+{ #category : 'accessing' }
+CMFlatTopHexagonShape >> extent [
+    | r |
+
+    r := size.
+    ^ (r * 2) @ (r * 3 sqrt)
+]
+
 { #category : 'accessing' }
 CMFlatTopHexagonShape >> geometry [
+    | r h a |
 
-    | w h left right topLeft topRight |
+    r := size.
+    h := r * 3 sqrt / 2.   
+    a := r * (3 sqrt / 2). 
 
-    w := size x.
-    h := size y.
-
-    "top"
-    topLeft  := (w * 0.25 @ 0).
-    topRight := (w * 0.75 @ 0).
-
-    left := {
-        (0 @ (h / 2)).         
-        (w * 0.25 @ h)          
-    }.
-
-
-    right := left collect: [:p |
-        (w - p x) @ p y
-    ].
-
-    ^ BlPolygonGeometry vertices:
-        { topLeft. topRight } , right , left reversed
+    ^ BlPolygonGeometry vertices: {
+        ( r @ 0).
+        ( r / 2 @ a).
+        (-1*r / 2 @ a).
+        (-1*r @ 0).
+        (-1*r / 2 @ (-1*a)).
+        ( r / 2 @ (-1*a) )
+    }
 ]

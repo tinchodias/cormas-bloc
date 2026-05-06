@@ -131,16 +131,16 @@ CMTriangleShape >> orientation: aSymbol [
 
 { #category : 'as yet unclassified' }
 CMTriangleShape >> triangleBottomVertices [
+    | r a h |
 
-   | r a |
-
-   r := size.
-	a := r * 3 sqrt. "side of the triangle"
+    r := size.
+    a := r * 3 sqrt.
+    h := (3 * r) / 2.
 
     ^ {
-        (0 @ r).           
-        (a / -2) @ (r / -2). 
-        (a / 2) @ (r / -2)
+        (0 @ (h / 2)).
+        (a / -2 @ (h / -2)).
+        (a / 2 @ (h / -2))
     }
 ]
 
@@ -162,9 +162,9 @@ CMTriangleShape >> triangleRightVertices [
 
 { #category : 'as yet unclassified' }
 CMTriangleShape >> triangleTopVertices [
-	
-	^ self triangleBottomVertices
+
+    ^ self triangleBottomVertices
         collect: [ :p |
-            p x negated @ p y negated
+            p negated
         ]
 ]

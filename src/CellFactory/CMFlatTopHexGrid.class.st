@@ -7,50 +7,37 @@ Class {
 
 { #category : 'building' }
 CMFlatTopHexGrid >> build [
-
-    | space w h |
+    | space r w h xStep yStep offsetY |
 
     space := BlSpace new.
     space show.
 
-    w := shapeSize x.
-    h := shapeSize y.
+    r := shapeSize.
+    w := 2 * r.
+    h := 2 * r.
+
+    xStep := w * 3 / 4.
+    yStep := h * (3 sqrt / 2).
+
+    offsetY := yStep / 2.
 
     1 to: rows do: [:row |
-
         1 to: columns do: [:col |
-
             | x y shape |
 
-            "-----------------------------"
-            "BASE HEX GRID POSITION"
-            "-----------------------------"
+            x := (col - 1) * xStep.
+            y := (row - 1) * yStep.
 
-            x := (col - 1) * (w * 0.75).
-            y := (row - 1) * (h * 0.86602540378).
-
-            "-----------------------------"
-            "STAGGER (honeycomb shift)"
-            "-----------------------------"
-
-            (col odd) ifTrue: [
-                y := y + (h * 0.46)
+            (col even) ifTrue: [
+                y := y + offsetY
             ].
 
-            "-----------------------------"
-            "CREATE HEX SHAPE"
-            "-----------------------------"
-
             shape := CMFlatTopHexagonShape new
-                size: shapeSize;
+                size: r;
                 position: x @ y;
-                color: Color orange;
+                color: Color yellow;
                 borderColor: Color black;
                 borderWidth: 1.
-
-            "-----------------------------"
-            "ADD TO SCENE"
-            "-----------------------------"
 
             space root addChild: shape element
         ].

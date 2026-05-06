@@ -8,6 +8,20 @@ Class {
 	#package : 'CellFactory'
 }
 
+{ #category : 'examples' }
+CMBlGrid class >> example [
+
+	| simulation grid |
+	simulation := (CMSimulation for: ECECModel)
+		activeInitSelector: #smallEnvironment;
+		activeControlSelector: #step;
+		initializeSimulation;
+		yourself. 
+	
+	grid := self for: simulation cormasModel.
+	grid buildPresenter open
+]
+
 { #category : 'instance creation' }
 CMBlGrid class >> for: aCormasModel [
 	
@@ -31,7 +45,7 @@ CMBlGrid >> borderWidthOfCell: aCell [
 { #category : 'building' }
 CMBlGrid >> buildPresenter [
 	
-	| shapeSize spacing diameter step spacePresenter space |
+	| shapeSize spacing diameter step gridElement spacePresenter space |
 	
 	shapeSize := 50.
 	spacing := 0.
@@ -39,8 +53,8 @@ CMBlGrid >> buildPresenter [
 	diameter := shapeSize * 2.
 	step := diameter + spacing.
 	
-	spacePresenter := SpBlSpaceInMorphPresenter new.
-	space := spacePresenter space.
+	gridElement := BlElement new.
+	gridElement extent: (step * self numberOfRows) @ (step * self numberOfColumns).
 
 	1 to: self numberOfRows do: [ :row |
 		1 to: self numberOfColumns do: [ :col |
@@ -56,16 +70,41 @@ CMBlGrid >> buildPresenter [
 				borderColor: (self borderColorOfCell: cell);
 				borderWidth: (self borderWidthOfCell: cell) * diameter;
 				yourself.
+				
+			"shape orientation: ((row + col) odd
+				ifTrue: [ #top ]
+				ifFalse: [ #bottom ])."
 
-			space root addChild: shape element ] ].
+			gridElement addChild: shape element ] ].
+	
+	spacePresenter := SpBlSpaceInMorphPresenter new.
+	space := spacePresenter space.
+	
+	space root layout: BlFrameLayout new.
+	
+	gridElement constraintsDo: [ :c |
+		c frame vertical alignCenter.
+		c frame horizontal alignCenter ].
+	
+	space root addChild: gridElement.
 
 	^ spacePresenter
 ]
 
 { #category : 'as yet unclassified' }
 CMBlGrid >> cellElementClass [
+   
+	^ CMSquareShape 
+]
 
-	^ CMSquareShape
+{ #category : 'as yet unclassified' }
+CMBlGrid >> cellElementClass: n [
+
+    n = 3 ifTrue: [ ^ CMTriangleShape ].
+    n = 4 ifTrue: [ ^ CMSquareShape ].
+    n = 6 ifTrue: [ ^ CMPointyTopHexagonShape ].
+	 n = #flat6 ifTrue: [ ^ CMFlatTopHexagonShape ].
+ 
 ]
 
 { #category : 'as yet unclassified' }
@@ -78,6 +117,11 @@ CMBlGrid >> colorOfCell: aCell [
 CMBlGrid >> cormasModel: aCormasModel [
 
 	cormasModel := aCormasModel
+]
+
+{ #category : 'examples' }
+CMBlGrid >> example [
+	<script: 'self example'>
 ]
 
 { #category : 'accessing' }

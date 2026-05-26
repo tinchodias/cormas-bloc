@@ -1,5 +1,5 @@
 Class {
-	#name : 'CMBlGrid',
+	#name : 'CMBlGridBuilder',
 	#superclass : 'Object',
 	#instVars : [
 		'cormasModel',
@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : 'examples' }
-CMBlGrid class >> example [
+CMBlGridBuilder class >> example [
 
 	| simulation grid |
 	simulation := (CMSimulation for: ECECModel )
@@ -29,7 +29,7 @@ CMBlGrid class >> example [
 ]
 
 { #category : 'instance creation' }
-CMBlGrid class >> for: aCormasModel [
+CMBlGridBuilder class >> for: aCormasModel [
 	
 	^ self new
 		cormasModel: aCormasModel;
@@ -37,19 +37,19 @@ CMBlGrid class >> for: aCormasModel [
 ]
 
 { #category : 'as yet unclassified' }
-CMBlGrid >> borderColorOfCell: aCell [
+CMBlGridBuilder >> borderColorOfCell: aCell [
 
 	^ (self povOfCell: aCell) borderColor
 ]
 
 { #category : 'as yet unclassified' }
-CMBlGrid >> borderWidthOfCell: aCell [
+CMBlGridBuilder >> borderWidthOfCell: aCell [
 
 	^ (self povOfCell: aCell) borderWidth
 ]
 
 { #category : 'building' }
-CMBlGrid >> buildPresenter [
+CMBlGridBuilder >> buildPresenter [
 	
 	| spacePresenter space|
 	
@@ -99,7 +99,7 @@ space root layout: BlFrameLayout new.
 ]
 
 { #category : 'as yet unclassified' }
-CMBlGrid >> cellElementClass [
+CMBlGridBuilder >> cellElementClass [
 
     degree = 3 ifTrue: [ ^ CMTriangleShape ].
     degree = 4 ifTrue: [ ^ CMSquareShape ].
@@ -109,29 +109,29 @@ CMBlGrid >> cellElementClass [
 ]
 
 { #category : 'as yet unclassified' }
-CMBlGrid >> colorOfCell: aCell [
+CMBlGridBuilder >> colorOfCell: aCell [
 
 	^ (self povOfCell: aCell) color
 ]
 
 { #category : 'accessing' }
-CMBlGrid >> cormasModel: aCormasModel [
+CMBlGridBuilder >> cormasModel: aCormasModel [
 
 	cormasModel := aCormasModel
 ]
 
 { #category : 'accessing' }
-CMBlGrid >> degree: aNumber [
+CMBlGridBuilder >> degree: aNumber [
 	degree := aNumber.
 ]
 
 { #category : 'as yet unclassified' }
-CMBlGrid >> elementAtRow: row col: col [
+CMBlGridBuilder >> elementAtRow: row col: col [
 	^ cellElements at: row @ col
 ]
 
 { #category : 'as yet unclassified' }
-CMBlGrid >> elementForCell: aCell [
+CMBlGridBuilder >> elementForCell: aCell [
 
     ^ self
         elementAtRow: aCell rowNumber
@@ -139,37 +139,37 @@ CMBlGrid >> elementForCell: aCell [
 ]
 
 { #category : 'examples' }
-CMBlGrid >> example [
+CMBlGridBuilder >> example [
 	<script: 'self example'>
 ]
 
 { #category : 'accessing' }
-CMBlGrid >> gridElement [
+CMBlGridBuilder >> gridElement [
     ^ gridElement
 ]
 
 { #category : 'initialization' }
-CMBlGrid >> initialize [
+CMBlGridBuilder >> initialize [
     super initialize.
     shapeSize := 50.
     spacing := 0.
-	 degree:= 4.
+	 degree:= 6.
 ]
 
 { #category : 'accessing' }
-CMBlGrid >> numberOfColumns [
+CMBlGridBuilder >> numberOfColumns [
 
 	^ cormasModel spaceModel numberOfColumns
 ]
 
 { #category : 'accessing' }
-CMBlGrid >> numberOfRows [
+CMBlGridBuilder >> numberOfRows [
 
 	^ cormasModel spaceModel numberOfRows
 ]
 
 { #category : 'as yet unclassified' }
-CMBlGrid >> position: aRow col: aCol [
+CMBlGridBuilder >> position: aRow col: aCol [
 
 	|x y step offsetX offsetY|
 
@@ -197,13 +197,13 @@ CMBlGrid >> position: aRow col: aCol [
 ]
 
 { #category : 'as yet unclassified' }
-CMBlGrid >> povOfCell: aCell [
+CMBlGridBuilder >> povOfCell: aCell [
 
 	^ aCell perform: aCell class activePovSelector
 ]
 
 { #category : 'as yet unclassified' }
-CMBlGrid >> setOrientation: aRow col: aCol shape: aShape [
+CMBlGridBuilder >> setOrientation: aRow col: aCol shape: aShape [
 	degree = 3 ifTrue: [
 								aShape orientation: ((aRow + aCol ) odd
 								ifTrue: [ #top ]
@@ -212,27 +212,27 @@ CMBlGrid >> setOrientation: aRow col: aCol shape: aShape [
 ]
 
 { #category : 'accessing' }
-CMBlGrid >> shapeExtent [
+CMBlGridBuilder >> shapeExtent [
 	^shapeExtent
 ]
 
 { #category : 'accessing' }
-CMBlGrid >> shapeSize [
+CMBlGridBuilder >> shapeSize [
 	^shapeSize
 ]
 
 { #category : 'accessing' }
-CMBlGrid >> shapeSize: aNumber [
+CMBlGridBuilder >> shapeSize: aNumber [
 	shapeSize := aNumber.
 ]
 
 { #category : 'accessing' }
-CMBlGrid >> spacing: aNumber [
+CMBlGridBuilder >> spacing: aNumber [
 	spacing := aNumber.
 ]
 
 { #category : 'stepping' }
-CMBlGrid >> step [
+CMBlGridBuilder >> step [
     degree = 3 ifTrue: [
         ^ (3 sqrt / 2) @ (3 / 2) * shapeSize
     ].

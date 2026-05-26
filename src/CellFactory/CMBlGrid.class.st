@@ -5,7 +5,10 @@ Class {
 		'cormasModel',
 		'shapeSize',
 		'spacing',
-		'degree'
+		'degree',
+		'gridElement',
+		'cellElements',
+		'shapeExtent'
 	],
 	#category : 'CellFactory',
 	#package : 'CellFactory'
@@ -48,9 +51,9 @@ CMBlGrid >> borderWidthOfCell: aCell [
 { #category : 'building' }
 CMBlGrid >> buildPresenter [
 	
-	| gridElement spacePresenter space |
+	| spacePresenter space|
 	
-	
+	cellElements := Dictionary new.
 	gridElement := BlElement new.
 	gridElement extent: ( self step x * self numberOfRows) @ (self step y * self numberOfColumns).
 
@@ -71,7 +74,14 @@ CMBlGrid >> buildPresenter [
 				
 				self setOrientation: row col: col shape: shape.
 			
-			gridElement addChild: shape element ] ].
+			gridElement addChild: shape element. 
+			shapeExtent:= shape extent.
+			cellElements
+                at: row @ col
+                put: shape element
+			
+			
+			] ].
 	
 	spacePresenter := SpBlSpaceInMorphPresenter new.
 	space := spacePresenter space.
@@ -115,9 +125,27 @@ CMBlGrid >> degree: aNumber [
 	degree := aNumber.
 ]
 
+{ #category : 'as yet unclassified' }
+CMBlGrid >> elementAtRow: row col: col [
+	^ cellElements at: row @ col
+]
+
+{ #category : 'as yet unclassified' }
+CMBlGrid >> elementForCell: aCell [
+
+    ^ self
+        elementAtRow: aCell rowNumber
+        col: aCell columnNumber
+]
+
 { #category : 'examples' }
 CMBlGrid >> example [
 	<script: 'self example'>
+]
+
+{ #category : 'accessing' }
+CMBlGrid >> gridElement [
+    ^ gridElement
 ]
 
 { #category : 'initialization' }
@@ -125,7 +153,7 @@ CMBlGrid >> initialize [
     super initialize.
     shapeSize := 50.
     spacing := 0.
-	 degree:= 6.
+	 degree:= 4.
 ]
 
 { #category : 'accessing' }
@@ -181,6 +209,16 @@ CMBlGrid >> setOrientation: aRow col: aCol shape: aShape [
 								ifTrue: [ #top ]
 								ifFalse: [ #bottom ]).
 							].
+]
+
+{ #category : 'accessing' }
+CMBlGrid >> shapeExtent [
+	^shapeExtent
+]
+
+{ #category : 'accessing' }
+CMBlGrid >> shapeSize [
+	^shapeSize
 ]
 
 { #category : 'accessing' }

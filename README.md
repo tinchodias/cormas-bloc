@@ -1,5 +1,5 @@
 # cormas-bloc
-Experimenting with Bloc for Cormas spatial grid
+Experimenting with Bloc for [Cormas](https://github.com/cormas/cormas) spatial grid.
 
 
 ## Installation
